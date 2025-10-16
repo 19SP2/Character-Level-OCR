@@ -51,18 +51,31 @@ Predicted   : a
 ## Folder Structure
 
 OCR Project/ 
+
 ├── myFonts/ 
+
 │ └── DejaVuSans.ttf 
+
 ├── datasets/ 
+
 │ ├── emnist/ 
+
 │ ├── trdg_custom/ 
+
 │ ├── synthetic_math/ 
+
 │ └── data.csv 
+
 ├── prepare_ocr_dataset.py 
+
 ├── train_model.py 
+
 ├── inference_crnn.py 
+
 ├── ocr_crnn_model/ 
+
 │ └── crnn.pth 
+
 └── venv/
 
 ## Acknowledgments
