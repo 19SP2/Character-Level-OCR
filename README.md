@@ -26,6 +26,7 @@ After training, the model and character mapping are saved in: ocr_crnn_model/crn
 ## Evaluation
 
 During or after training, you’ll see logs like:
+
 Epoch 200/200 — Loss: 0.1245 — Accuracy: 95.38%
 ✅ Model saved to ocr_crnn_model/crnn.pth
 
