@@ -7,9 +7,7 @@ from PIL import Image
 import pandas as pd
 import torchvision.transforms as transforms
 
-# -----------------------------
-# 1️⃣ Dataset Class
-# -----------------------------
+# Dataset Class
 class OCRDataset(Dataset):
     def __init__(self, csv_file):
         self.data = pd.read_csv(csv_file)
@@ -37,9 +35,8 @@ class OCRDataset(Dataset):
         label = torch.tensor(self.encode_label(row["label"]), dtype=torch.long)
         return img, label
 
-# -----------------------------
-# 2️⃣ Collate function for variable-length labels
-# -----------------------------
+
+# Collate function for variable-length labels
 def collate_fn(batch):
     imgs, labels = zip(*batch)
     imgs = torch.stack(imgs)
@@ -47,9 +44,8 @@ def collate_fn(batch):
     labels_concat = torch.cat(labels)
     return imgs, labels_concat, label_lengths
 
-# -----------------------------
-# 3️⃣ CRNN Model
-# -----------------------------
+
+# CRNN Model
 class CRNN(nn.Module):
     def __init__(self, img_h=32, nc=1, nclass=80, nh=256):
         super(CRNN, self).__init__()
@@ -80,9 +76,7 @@ class CRNN(nn.Module):
         output = output.permute(1,0,2)  # (seq_len, batch, nclass) for CTC
         return output
 
-# -----------------------------
-# 4️⃣ CTC Decoding
-# -----------------------------
+#  CTC Decoding
 def ctc_greedy_decode(preds, idx_to_char):
     preds = preds.permute(1,0,2)  # (batch, seq_len, nclass)
     preds = preds.argmax(2).cpu().numpy()
@@ -97,9 +91,7 @@ def ctc_greedy_decode(preds, idx_to_char):
         texts.append("".join(chars))
     return texts
 
-# -----------------------------
-# 5️⃣ Training Setup
-# -----------------------------
+#  Training Setup
 device = "cuda" if torch.cuda.is_available() else "cpu"
 dataset = OCRDataset("datasets/data.csv")
 dataloader = DataLoader(dataset, batch_size=16, shuffle=True, collate_fn=collate_fn)
@@ -108,7 +100,7 @@ model = CRNN(nclass=len(dataset.char_to_idx)+1).to(device)
 criterion = nn.CTCLoss(blank=0)
 optimizer = optim.Adam(model.parameters(), lr=1e-3)
 
-num_epochs = 150
+num_epochs = 200
 for epoch in range(num_epochs):
     model.train()
     epoch_loss = 0
@@ -156,9 +148,7 @@ for epoch in range(num_epochs):
     epoch_acc = correct_chars / total_chars if total_chars > 0 else 0
     print(f"Epoch {epoch+1}/{num_epochs} — Loss: {epoch_loss/len(dataloader):.4f} — Accuracy: {epoch_acc*100:.2f}%")
 
-# -----------------------------
-# 6️⃣ Save Model
-# -----------------------------
+# Save Model
 os.makedirs("ocr_crnn_model", exist_ok=True)
 torch.save({
     'model_state_dict': model.state_dict(),
@@ -167,9 +157,7 @@ torch.save({
 }, "ocr_crnn_model/crnn.pth")
 print("✅ Model saved to ocr_crnn_model/crnn.pth")
 
-# -----------------------------
-# 7️⃣ Example Inference
-# -----------------------------
+#  Example Inference
 model.eval()
 with torch.no_grad():
     sample_img, sample_label = dataset[0]
@@ -177,5 +165,6 @@ with torch.no_grad():
     text = ctc_greedy_decode(pred, dataset.idx_to_char)[0]
 print(f"Ground truth: {''.join([dataset.idx_to_char[i.item()] for i in sample_label])}")
 print(f"Prediction  : {text}")
+
 
 # thon train_model.pypy
