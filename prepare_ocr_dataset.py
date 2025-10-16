@@ -10,9 +10,7 @@ def prepare_datasets():
     os.makedirs("datasets", exist_ok=True)
     all_data = []  # store image paths and labels
 
-    # -----------------------------
-    # 1️⃣ EMNIST (letters + digits)
-    # -----------------------------
+    #  EMNIST (letters + digits)
     print("⬇️ Downloading EMNIST (letters + digits)...")
     emnist = datasets.EMNIST(
         root="datasets/emnist",
@@ -48,9 +46,7 @@ def prepare_datasets():
 
     print(f"✅ EMNIST images saved: {limit} samples added")
 
-    # -----------------------------
-    # 2️⃣ TRDG synthetic text images
-    # -----------------------------
+    #  TRDG synthetic text images
     print("🧮 Generating TRDG samples...")
     os.makedirs("datasets/trdg_custom", exist_ok=True)
 
@@ -72,10 +68,8 @@ def prepare_datasets():
         img.save(path)
         all_data.append([path, lbl])
     print(f"✅ TRDG samples generated: {len(strings)}")
-
-    # -----------------------------
-    # 3️⃣ Synthetic math symbols
-    # -----------------------------
+    
+    # Synthetic math symbols
     print("🧮 Creating synthetic math symbols...")
     os.makedirs("datasets/synthetic_math", exist_ok=True)
 
@@ -96,9 +90,7 @@ def prepare_datasets():
         all_data.append([path, s])
     print(f"✅ Math symbols generated: {len(symbols)}")
 
-    # -----------------------------
-    # 4️⃣ Save all data to CSV
-    # -----------------------------
+    #  Save all data to CSV
     csv_path = "datasets/data.csv"
     with open(csv_path, "w", newline="", encoding="utf-8") as f:
         writer = csv.writer(f)
@@ -113,5 +105,6 @@ if __name__ == "__main__":
     print("🚀 Starting dataset preparation...")
     prepare_datasets()
     print("✅ All datasets ready!")
+
 
 # python prepare_ocr_dataset.py
