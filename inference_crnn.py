@@ -5,9 +5,7 @@ import pandas as pd
 from PIL import Image
 import torchvision.transforms as transforms
 
-# -----------------------------
 # CRNN Model Definition
-# -----------------------------
 class CRNN(nn.Module):
     def __init__(self, img_h=32, nc=1, nclass=80, nh=256):
         super(CRNN, self).__init__()
@@ -35,9 +33,7 @@ class CRNN(nn.Module):
         output = output.permute(1,0,2)
         return output
 
-# -----------------------------
 # Load Model
-# -----------------------------
 device = "cuda" if torch.cuda.is_available() else "cpu"
 checkpoint = torch.load("ocr_crnn_model/crnn.pth", map_location=device)
 idx_to_char = checkpoint['idx_to_char']
@@ -46,9 +42,7 @@ model = CRNN(nclass=len(idx_to_char)+1).to(device)
 model.load_state_dict(checkpoint['model_state_dict'])
 model.eval()
 
-# -----------------------------
 # Helper Functions
-# -----------------------------
 def preprocess_image(image_path):
     transform = transforms.Compose([
         transforms.Grayscale(num_output_channels=1),
@@ -73,9 +67,7 @@ def ctc_greedy_decode(preds, idx_to_char):
         texts.append("".join(chars))
     return texts
 
-# -----------------------------
 # Load CSV and Compare
-# -----------------------------
 data_csv = pd.read_csv("datasets/data.csv")
 
 # pick a few random samples to check predictions
@@ -104,5 +96,6 @@ def load_model(checkpoint_path):
     model.load_state_dict(checkpoint["model_state_dict"])
     model.eval()
     return model, idx_to_char, device
+
 
 # python inference_crnn.py
