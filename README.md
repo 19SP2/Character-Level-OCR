@@ -35,29 +35,47 @@ Epoch 200/200 — Loss: 0.1245 — Accuracy: 95.38%
 To predict text from new images: python inference_crnn.py
 
 Example output:
+
 Image: datasets/emnist_images/00000.png
+
 Ground Truth: Z
+
 Predicted   : 2
 
 Image: datasets/emnist_images/00001.png
+
 Ground Truth: a
+
 Predicted   : a
 
 ## Folder Structure
 
 OCR Project/ 
+
 ├── myFonts/ 
+
 │ └── DejaVuSans.ttf 
+
 ├── datasets/ 
+
 │ ├── emnist/ 
+
 │ ├── trdg_custom/ 
+
 │ ├── synthetic_math/ 
+
 │ └── data.csv 
+
 ├── prepare_ocr_dataset.py 
+
 ├── train_model.py 
+
 ├── inference_crnn.py 
+
 ├── ocr_crnn_model/ 
+
 │ └── crnn.pth 
+
 └── venv/
 
 ## Acknowledgments
@@ -67,6 +85,9 @@ OCR Project/
 - Synthetic Math Symbol Dataset
 
 🧩 Author: Sharvari Sunil Pradhan
-📘 Project: Character-Level OCR (CRNN)
+
+📘 Project: Character-Level-OCR (CRNN)
+
 📅 Year: 2025
+
 ✨ Open for collaboration and improvements!
